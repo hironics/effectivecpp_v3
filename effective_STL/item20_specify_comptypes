@@ -1,0 +1,44 @@
+/*
+Item 20
+for associated container, we need to make sure you have defined
+comparison object for the pointer type/smart pointer
+*/
+
+#include <iostream>
+#include <algorithm>
+#include <set>
+#include <string>
+
+using namespace std;
+
+//general pointer dereference functor 
+struct DereferenceLess {
+    template <typename PtrType>
+    bool operator()(PtrType pt1, PtrType pt2) const {
+        return *pt1 < *pt2;
+    }
+};
+
+// can't use this function to construct set as it expects 
+// type not a function 
+bool stringPtrLess(const string* ps1, const string* ps2){
+    return *ps1 < *ps2;
+}
+
+void print(const string* ps){
+    cout << *ps << endl;
+}
+
+int main()
+{
+    // set of string*
+    set<string*, DereferenceLess> ssp;
+    ssp.insert( new string("abc"));
+    ssp.insert( new string("hhj"));
+    ssp.insert( new string("zzf"));
+    ssp.insert( new string("def"));
+    // printer should be type aware
+    //foreach can convert its prameter from func to func object
+    for_each(ssp.begin(), ssp.end(), print); 
+
+}
