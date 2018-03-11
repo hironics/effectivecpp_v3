@@ -1,0 +1,40 @@
+/* item 24 
+effecient item add and remove
+*/
+
+#include <iostream>
+#include <iterator>
+#include <set>
+#include <map>
+#include <string>
+using namespace std;
+
+template<typename MapType, 
+        typename KeyArgType,
+        typename ValueType>
+typename MapType::iterator 
+effecientAddOrUpdate(MapType& m, const KeyArgType& k,
+                    const ValueType& v)
+{
+    typename MapType::iterator ib = m.lower_bound(k); // find where k is or should be 
+    
+    if(ib!=m.end() && !(m.key_comp()(k, ib->first))) {
+        ib->second =v;
+        return ib;
+    }
+    else {
+        typedef typename MapType::value_type MVT;
+        return m.insert(ib, MVT(k,v));
+    }
+}
+
+int main()
+{
+    set<int> s{3, 4, 2, 10};
+    copy(s.begin(), s.end(), ostream_iterator<int>(cout, " ") );
+    cout << endl;
+    map<int, string> m;
+    effecientAddOrUpdate(m, 2, "name");
+    effecientAddOrUpdate(m, 1, "change");
+    cout << m.size() << endl;
+}
