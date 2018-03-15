@@ -32,13 +32,13 @@ void print(const string* ps){
 int main()
 {
     // set of string*
-    set<string*, DereferenceLess> ssp;
+    set<string*, DereferenceLess> ssp;  // DereferenceLess is used in meta typename, so class is expected
     ssp.insert( new string("abc"));
     ssp.insert( new string("hhj"));
     ssp.insert( new string("zzf"));
     ssp.insert( new string("def"));
     // printer should be type aware
     //foreach can convert its prameter from func to func object
-    for_each(ssp.begin(), ssp.end(), print); 
+    for_each(ssp.begin(), ssp.end(), print); // print is an argument, so it can be a function
 
 }
